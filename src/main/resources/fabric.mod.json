@@ -5,33 +5,26 @@
 	"name": "RedFox Elytra Trinket",
 	"description": "This is an example description! Tell everyone what your mod is about!",
 	"authors": [
-		"Me!"
+		"RedFox"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "",
+		"sources": ""
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/redfox-elytra-trinket/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.redfox.ret.RedFoxElytraTrinket"
+			"com.redfox.ret.MainEntryPoint"
 		],
 		"client": [
-			"com.redfox.ret.client.RedFoxElytraTrinketClient"
+			"com.redfox.ret.client.ClientEntryPoint"
 		]
 	},
-	"mixins": [
-		"redfox-elytra-trinket.mixins.json",
-		{
-			"config": "redfox-elytra-trinket.client.mixins.json",
-			"environment": "client"
-		}
-	],
 	"depends": {
 		"fabricloader": ">=0.19.3",
-		"minecraft": "~26.2",
+		"minecraft": "~26.1.2",
 		"java": ">=25",
 		"fabric-api": "*"
 	}
