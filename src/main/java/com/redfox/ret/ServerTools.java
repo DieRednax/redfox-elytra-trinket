@@ -36,11 +36,13 @@ public final class ServerTools {
      * Make the given entity fly if the given Elytra is usable.
      *
      * @param entity The entity.
-     * @param stack  The Elytra.
+     * @param slot  The Elytra slot access.
      * @param doTick Whether or not the Elytra should be checked on this tick.
      * @returns Whether or not the entity was made to fly.
      */
-    private static boolean useElytraTrinket(LivingEntity entity, ItemStack stack, boolean doTick) {
+    private static boolean useElytraTrinket(LivingEntity entity, TrinketSlotAccess slot, boolean doTick) {
+        ItemStack stack = slot.get();
+
         if (!ServerTools.isUsableElytra(stack) || !(entity instanceof Player playerEntity)) {
             return false;
         }
@@ -53,14 +55,12 @@ public final class ServerTools {
         Level world = entity.level();
         if (!world.isClientSide() && nextRoll % 10 == 0) {
             if ((nextRoll / 10) % 2 == 0) {
-                if (playerEntity instanceof ServerPlayer serverPlayer) {
-                    stack.hurtAndBreak(
-                            1,
-                            serverPlayer.level(),
-                            serverPlayer,
-                            item -> {}
-                    );
-                }
+                TrinketsApi.hurtAndBreakItemStack(
+                        stack,
+                        1,
+                        playerEntity,
+                        slot
+                );
             }
 
             entity.gameEvent(GameEvent.ELYTRA_GLIDE);
@@ -73,8 +73,8 @@ public final class ServerTools {
     protected static void registerFlight() {
         EntityElytraEvents.CUSTOM.register((entity, tickElytra) -> {
             // If an equipped Elytra is usable, fly.
-            for (ItemStack stack : ServerTools.getEquippedElytraTrinkets(entity)) {
-                if (ServerTools.useElytraTrinket(entity, stack, tickElytra)) {
+            for (TrinketSlotAccess slot : ServerTools.getEquippedElytraTrinkets(entity)) {
+                if (ServerTools.useElytraTrinket(entity, slot, tickElytra)) {
                     return true;
                 }
             }
@@ -90,8 +90,8 @@ public final class ServerTools {
      * @param entity The entity that has the Elytra equipped.
      * @returns A list of equipped Elytra trinkets.
      */
-    public static List<ItemStack> getEquippedElytraTrinkets(LivingEntity entity) {
-        List<ItemStack> out = new ArrayList<>();
+    public static List<TrinketSlotAccess> getEquippedElytraTrinkets(LivingEntity entity) {
+        List<TrinketSlotAccess> out = new ArrayList<>();
 
         TrinketAttachment attachment =
                 TrinketsApi.getAttachment(entity);
@@ -107,10 +107,8 @@ public final class ServerTools {
                 continue;
             }
 
-            ItemStack stack = slot.get();
-
-            if (!stack.isEmpty()) {
-                out.add(stack);
+            if (!slot.get().isEmpty()) {
+                out.add(slot);
             }
         }
 
@@ -125,6 +123,6 @@ public final class ServerTools {
      * @returns Whether or not the entity is wearing an Elytra in a trinket slot.
      */
     public static boolean isElytraTrinketEquipped(LivingEntity entity) {
-        return ServerTools.getEquippedElytraTrinkets(entity).size() > 0;
+        return !getEquippedElytraTrinkets(entity).isEmpty();
     }
 }
