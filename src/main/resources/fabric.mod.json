@@ -27,6 +27,6 @@
 		"minecraft": "~26.1.2",
 		"java": ">=25",
 		"fabric-api": "*",
-		"trinkets-updated": "4.0.0-beta.3+26.1"
+		"trinkets-updated": "4.0.0+26.1"
 	}
 }
