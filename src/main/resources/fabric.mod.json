@@ -11,7 +11,7 @@
 		"homepage": "...",
 		"sources": "https://github.com/DieRednax/redfox-elytra-trinket"
 	},
-	"license": "CC0 1.0 Universal",
+	"license": "MIT",
 	"icon": "assets/redfox-elytra-trinket/icon.png",
 	"environment": "*",
 	"entrypoints": {
@@ -27,6 +27,6 @@
 		"minecraft": "~26.1.2",
 		"java": ">=25",
 		"fabric-api": "*",
-		"trinkets-updated": "4.0.0+26.1"
+		"trinkets-updated": "4.0.1+26.1"
 	}
 }
